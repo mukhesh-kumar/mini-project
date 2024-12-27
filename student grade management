@@ -1,0 +1,64 @@
+#include <stdio.h>
+
+#define MAX_STUDENTS 100
+
+struct Student {
+    char name[50];
+    int id;
+    float grade;
+};
+
+void addStudent(struct Student *students, int *count) {
+    if (*count < MAX_STUDENTS) {
+        printf("Enter student ID: ");
+        scanf("%d", &students[*count].id);
+        printf("Enter student name: ");
+        getchar(); // to consume the newline character
+        fgets(students[*count].name, 50, stdin);
+        students[*count].name[strcspn(students[*count].name, "\n")] = 0; // Remove newline
+        printf("Enter student grade: ");
+        scanf("%f", &students[*count].grade);
+        (*count)++;
+        printf("Student added successfully!\n");
+    } else {
+        printf("Student list is full!\n");
+    }
+}
+
+void displayStudents(struct Student *students, int count) {
+    printf("\nList of Students:\n");
+    for (int i = 0; i < count; i++) {
+        printf("ID: %d, Name: %s, Grade: %.2f\n", students[i].id, students[i].name, students[i].grade);
+    }
+}
+
+int main() {
+    struct Student students[MAX_STUDENTS];
+    int count = 0;
+    int choice;
+
+    do {
+        printf("\nStudent Grade Management System\n");
+        printf("1. Add Student\n");
+        printf("2. Display Students\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addStudent(students, &count);
+                break;
+            case 2:
+                displayStudents(students, count);
+                break;
+            case 3:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    } while (choice != 3);
+
+    return 0;
+}
